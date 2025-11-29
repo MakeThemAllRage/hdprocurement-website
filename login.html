@@ -16,6 +16,9 @@
           style="height:60px; border-radius:8px;" 
         />
       </div>
+
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+
       <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="services.html">Services</a>
@@ -24,6 +27,15 @@
         <a href="contact.html">Contact</a>
         <a href="login.html" class="btn-outline">Login</a>
       </nav>
+    </div>
+
+    <div id="mobile-menu" class="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="contracting-information.html">Contracting Information</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login</a>
     </div>
   </header>
 
@@ -79,6 +91,11 @@
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById("mobile-menu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+    }
   </script>
 </body>
 </html>
