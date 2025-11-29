@@ -9,15 +9,16 @@
 <body>
   <header>
     <div class="container navbar">
-      <a href="index.html" class="logo">
-        <div class="logo-mark">HD</div>
+      <div class="logo">
+        <img src="logo-hd-procurement.png" alt="HD Procurement LLC" style="height:36px; border-radius:8px;" />
         <span>HD Procurement LLC</span>
-      </a>
+      </div>
       <nav class="nav-links">
+        <a href="index.html">Home</a>
         <a href="services.html">Services</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
-        <a href="#" class="btn-outline">Login</a>
+        <a href="login.html" class="btn-outline">Login</a>
       </nav>
     </div>
   </header>
@@ -27,36 +28,47 @@
       <div class="container contact-grid">
         <div>
           <div class="section-kicker">Contact</div>
-          <h2>Let’s talk about your upcoming requirements.</h2>
+          <h2>Let’s talk about coordinating your next project.</h2>
           <p>
-            Whether you are an agency seeking a reliable prime contractor, or a subcontractor
-            interested in partnering, HD Procurement LLC is interested in hearing from you.
+            Whether you are planning upcoming work, exploring potential partnerships, or
+            interested in collaborating as a subcontractor or vendor, HD Procurement LLC
+            would be glad to hear from you.
           </p>
+
           <div style="margin-top:1.5rem;">
-            <div class="contact-detail"><strong>Email:</strong> dominic@hdprocurement.com</div>
-            <div class="contact-detail"><strong>Phone:</strong> (253) 282-1210</div>
+            <div class="contact-detail"><strong>Email:</strong> info@hdprocurement.com</div>
+            <div class="contact-detail"><strong>Phone:</strong> (555) 555-5555</div>
             <div class="contact-detail"><strong>Website:</strong> hdprocurement.com</div>
           </div>
+          <p class="text-muted" style="margin-top:0.75rem;">
+            You can reach out directly using the details above, or send a message using the
+            contact form.
+          </p>
         </div>
 
         <div class="contact-card">
           <h3>Send us a message</h3>
           <p class="text-muted" style="margin-bottom:0.75rem;">
-            This is a simple contact form. For now it will submit via email or be wired
-            into a form handler service when you’re ready.
+            This form can be connected to your preferred email or form service. For now, it
+            serves as a simple way for visitors to share basic project details.
           </p>
-          <form>
+          <form
+            action="https://formspree.io/f/your-form-id" 
+            method="POST"
+          >
+            <!-- Replace the action URL above with your real Formspree or form handler URL -->
+            <input type="hidden" name="_subject" value="New inquiry from HD Procurement website" />
             <div>
               <label for="name">Name</label>
-              <input id="name" name="name" type="text" placeholder="Your name" />
+              <input id="name" name="name" type="text" placeholder="Your name" required />
             </div>
             <div>
               <label for="email">Email</label>
-              <input id="email" name="email" type="email" placeholder="you@example.com" />
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
             </div>
             <div>
               <label for="message">Message</label>
-              <textarea id="message" name="message" placeholder="Tell us how we can help."></textarea>
+              <textarea id="message" name="message" placeholder="Tell us how we can help." required></textarea>
             </div>
             <button type="submit" class="btn">Submit</button>
           </form>
