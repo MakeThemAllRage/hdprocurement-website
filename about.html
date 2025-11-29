@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | HD Procurement LLC</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo">
+        <div class="logo-mark">HD</div>
+        <span>HD Procurement LLC</span>
+      </a>
+      <nav class="nav-links">
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="#" class="btn-outline">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container two-col">
+        <div>
+          <div class="section-kicker">About HD Procurement</div>
+          <h2>Built to connect agencies with the right delivery teams.</h2>
+          <p>
+            HD Procurement LLC is a small-business prime contractor focused on aligning government
+            requirements with qualified subcontractors and vendors across the United States.
+            Our structure allows us to operate efficiently while still delivering personal attention
+            and responsive communication.
+          </p>
+          <p>
+            As owners, leadership is hands-on in every pursuit — from opportunity evaluation
+            through subcontractor selection and project completion. We are intentional about
+            the contracts we pursue so that we can show up fully for the agencies and communities
+            we serve.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Why work with HD Procurement</h3>
+          <p class="text-muted">
+            We are designed for agencies and partners who value clarity, reliability, and a
+            single accountable prime.
+          </p>
+          <ul style="margin-top:0.75rem; padding-left:1.25rem; font-size:0.9rem; color:var(--muted);">
+            <li>Registered business entity prepared for federal, state, and local work.</li>
+            <li>Prime contractor model with local subcontractor execution.</li>
+            <li>Direct access to decision-makers and project leads.</li>
+            <li>Technology-forward approach to opportunity discovery and tracking.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> HD Procurement LLC. All rights reserved.</span>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
