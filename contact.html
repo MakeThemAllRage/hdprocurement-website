@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | HD Procurement LLC</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo">
+        <div class="logo-mark">HD</div>
+        <span>HD Procurement LLC</span>
+      </a>
+      <nav class="nav-links">
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="#" class="btn-outline">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container contact-grid">
+        <div>
+          <div class="section-kicker">Contact</div>
+          <h2>Let’s talk about your upcoming requirements.</h2>
+          <p>
+            Whether you are an agency seeking a reliable prime contractor, or a subcontractor
+            interested in partnering, HD Procurement LLC is interested in hearing from you.
+          </p>
+          <div style="margin-top:1.5rem;">
+            <div class="contact-detail"><strong>Email:</strong> dominic@hdprocurement.com</div>
+            <div class="contact-detail"><strong>Phone:</strong> (253) 282-1210</div>
+            <div class="contact-detail"><strong>Website:</strong> hdprocurement.com</div>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <h3>Send us a message</h3>
+          <p class="text-muted" style="margin-bottom:0.75rem;">
+            This is a simple contact form. For now it will submit via email or be wired
+            into a form handler service when you’re ready.
+          </p>
+          <form>
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" />
+            </div>
+            <div>
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us how we can help."></textarea>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> HD Procurement LLC. All rights reserved.</span>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
