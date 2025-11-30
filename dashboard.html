@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | HD Procurement LLC</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="container navbar">
+      <div class="logo">
+        <img 
+          src="logo-hd-procurement.png" 
+          alt="HD Procurement LLC" 
+          style="height:60px;" 
+        />
+        <span class="logo-text">HD Procurement LLC</span>
+      </div>
+
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="contracting-information.html">Contracting Information</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html" class="btn-outline">Login</a>
+      </nav>
+    </div>
+
+    <div id="mobile-menu" class="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="contracting-information.html">Contracting Information</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker">Internal dashboard</div>
+          <h2>HD Procurement internal portal.</h2>
+          <p>
+            This area is reserved for HD Procurement LLC team members. Over time, this
+            dashboard can be expanded to track opportunities, bids, subcontractors, and
+            active projects.
+          </p>
+        </div>
+
+        <div class="card" style="margin-top:1.5rem;">
+          <h3>Welcome</h3>
+          <p class="text-muted" id="user-info">
+            Checking your session...
+          </p>
+
+          <button class="btn" id="logout-btn" style="margin-top:1rem;">
+            Log out
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> HD Procurement LLC. All rights reserved.</span>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://utpjnmvywcuhhhkhgcqo.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0cGpubXZ5d2N1aGhoa2hnY3FvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzAyMTcsImV4cCI6MjA4MDA0NjIxN30.8lWGmZ2Z5InfcI0qlGlMyMFsAsPdCyOA8ePc-ecPWnE";
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById("mobile-menu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+    }
+
+    async function checkSession() {
+      const userInfoEl = document.getElementById("user-info");
+      const { data, error } = await supabaseClient.auth.getSession();
+
+      if (error) {
+        console.error(error);
+        userInfoEl.textContent = "Error checking session. Redirecting to login...";
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1500);
+        return;
+      }
+
+      const session = data.session;
+
+      if (!session || !session.user) {
+        userInfoEl.textContent = "No active session. Redirecting to login...";
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1500);
+        return;
+      }
+
+      userInfoEl.textContent = "Signed in as: " + session.user.email;
+    }
+
+    async function handleLogout() {
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) {
+        console.error(error);
+        alert("Error logging out: " + error.message);
+        return;
+      }
+      window.location.href = "login.html";
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", handleLogout);
+
+    // Run on page load
+    checkSession();
+  </script>
+</body>
+</html>
