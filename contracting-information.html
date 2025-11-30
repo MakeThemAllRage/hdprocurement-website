@@ -223,5 +223,58 @@
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://utpjnmvywcuhhhkhgcqo.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0cGpubXZ5d2N1aGhoa2hnY3FvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzAyMTcsImV4cCI6MjA4MDA0NjIxN30.8lWGmZ2Z5InfcI0qlGlMyMFsAsPdCyOA8ePc-ecPWnE";
+  
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function updateNavForAuth() {
+      const { data } = await supabaseClient.auth.getSession();
+      const session = data.session;
+
+      const dashboard = document.getElementById("nav-dashboard");
+      const login = document.getElementById("nav-login");
+      const logout = document.getElementById("nav-logout");
+
+      const mDashboard = document.getElementById("mobile-dashboard");
+      const mLogin = document.getElementById("mobile-login");
+      const mLogout = document.getElementById("mobile-logout");
+
+      if (session && session.user) {
+        // User is logged in
+        if (dashboard) dashboard.style.display = "inline-flex";
+        if (login) login.style.display = "none";
+        if (logout) logout.style.display = "inline-flex";
+
+        if (mDashboard) mDashboard.style.display = "block";
+        if (mLogin) mLogin.style.display = "none";
+        if (mLogout) mLogout.style.display = "block";
+
+        // Attach logout action
+        if (logout) logout.onclick = handleLogout;
+        if (mLogout) mLogout.onclick = handleLogout;
+      } 
+      else {
+        // User is logged out
+        if (dashboard) dashboard.style.display = "none";
+        if (login) login.style.display = "inline-flex";
+        if (logout) logout.style.display = "none";
+
+        if (mDashboard) mDashboard.style.display = "none";
+        if (mLogin) mLogin.style.display = "block";
+        if (mLogout) mLogout.style.display = "none";
+      }
+    }
+
+    async function handleLogout(e) {
+      e.preventDefault();
+      await supabaseClient.auth.signOut();
+      window.location.href = "login.html";
+    }
+
+    updateNavForAuth();
+  </script>
 </body>
 </html>
