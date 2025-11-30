@@ -69,20 +69,27 @@
 
         <!-- Discovery Tab -->
         <div class="dashboard-panel active" id="tab-discovery">
-          <h3>Discovery</h3>
-          <p class="text-muted">
-            Contracts currently surfaced by the AI for review. Up to ten are displayed here
-            at a time. Use the <strong>+</strong> button to move a contract into the tracker.
-          </p>
+          <!-- DISCOVERY BOX (centered card) -->
+          <div class="discovery-box">
+            <h3>Discovery</h3>
+            <p class="text-muted">
+              Contracts surfaced by the AI for your review. Up to ten are displayed here at a time.
+              Use <strong>+</strong> to move a contract into the tracker.
+            </p>
 
-          <div id="discovery-list" class="contract-grid"></div>
+            <div id="discovery-list" class="contract-grid"></div>
+          </div>
 
-          <h3 style="margin-top:1.5rem;">Potential Contracts</h3>
-          <p class="text-muted">
-            Additional contracts beyond the first ten. These follow the same expiration rules
-            and can also be moved into the tracker with the <strong>+</strong> button.
-          </p>
-          <div id="potential-list" class="contract-grid"></div>
+          <!-- POTENTIAL CONTRACTS (Below the discovery box) -->
+          <div class="secondary-section">
+            <h3>Potential Contracts</h3>
+            <p class="text-muted">
+              Additional contracts beyond the Discovery limit (10). These follow the same expiration
+              rules and can be moved to the tracker using the <strong>+</strong> button.
+            </p>
+
+            <div id="potential-list" class="contract-grid"></div>
+          </div>
         </div>
 
         <!-- Tracker Tab (placeholder) -->
@@ -386,11 +393,34 @@
       });
     }
 
+    // ---------- CONTROL WHAT GETS TRANSFERRED TO THE TRACKER ----------
+
     function moveToTracker(id) {
       const idx = contracts.findIndex((c) => c.id === id);
-      if (idx !== -1) {
-        contracts[idx].status = "tracker";
-      }
+      if (idx === -1) return;
+
+      const c = contracts[idx];
+
+      // This object represents what will be sent to the Tracker.
+      // LATER: when we hook this to Supabase, this is the place to edit
+      // which fields move over (add/remove fields as you want).
+      const contractForTracker = {
+        id: c.id,
+        title: c.title,
+        agency: c.agency,
+        location: c.location,
+        dueDate: c.dueDate,
+        estValue: c.estValue,
+        sourceUrl: c.sourceUrl
+        // You can add more fields here later, like:
+        // sector, NAICS, PSC, notes, internalPriority, etc.
+      };
+
+      // TODO (future): save `contractForTracker` into a Supabase "tracker" table.
+
+      // For now: mark as tracker so it disappears from Discovery/Potential/Past
+      contracts[idx].status = "tracker";
+
       renderDashboard();
     }
 
