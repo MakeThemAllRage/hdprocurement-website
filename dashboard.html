@@ -35,14 +35,14 @@
 
     <div id="mobile-menu" class="mobile-menu">
       <a href="index.html">Home</a>
-        <a href="services.html">Services</a>
-        <a href="contracting-information.html">Contracting Information</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+      <a href="services.html">Services</a>
+      <a href="contracting-information.html">Contracting Information</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
 
-        <a href="dashboard.html" id="nav-dashboard" style="display:none;">Dashboard</a>
-        <a href="login.html" id="nav-login" class="btn-outline">Login</a>
-        <a href="#" id="nav-logout" class="btn-outline" style="display:none;">Logout</a>
+      <a href="dashboard.html" id="mobile-dashboard" style="display:none;">Dashboard</a>
+      <a href="login.html" id="mobile-login">Login</a>
+      <a href="#" id="mobile-logout" style="display:none;">Logout</a>
     </div>
   </header>
 
@@ -53,21 +53,60 @@
           <div class="section-kicker">Internal dashboard</div>
           <h2>HD Procurement internal portal.</h2>
           <p>
-            This area is reserved for HD Procurement LLC team members. Over time, this
-            dashboard can be expanded to track opportunities, bids, subcontractors, and
-            active projects.
+            This area is reserved for HD Procurement LLC team members. The Discovery view
+            shows contracts surfaced by the AI for review. From here, you can move
+            contracts into a tracker (to be built next) or let expired items roll into
+            Past Potentials for reference.
           </p>
         </div>
 
-        <div class="card" style="margin-top:1.5rem;">
-          <h3>Welcome</h3>
-          <p class="text-muted" id="user-info">
-            Checking your session...
+        <!-- Dashboard Tabs -->
+        <div class="dashboard-tabs">
+          <button class="dashboard-tab active" data-tab="discovery">Discovery</button>
+          <button class="dashboard-tab" data-tab="tracker">Tracker (coming soon)</button>
+          <button class="dashboard-tab" data-tab="past">Past Potentials</button>
+        </div>
+
+        <!-- Discovery Tab -->
+        <div class="dashboard-panel active" id="tab-discovery">
+          <h3>Discovery</h3>
+          <p class="text-muted">
+            Contracts currently surfaced by the AI for review. Up to ten are displayed here
+            at a time. Use the <strong>+</strong> button to move a contract into the tracker.
           </p>
 
-          <button class="btn" id="logout-btn" style="margin-top:1rem;">
-            Log out
-          </button>
+          <div id="discovery-list" class="contract-grid"></div>
+
+          <h3 style="margin-top:1.5rem;">Potential Contracts</h3>
+          <p class="text-muted">
+            Additional contracts beyond the first ten. These follow the same expiration rules
+            and can also be moved into the tracker with the <strong>+</strong> button.
+          </p>
+          <div id="potential-list" class="contract-grid"></div>
+        </div>
+
+        <!-- Tracker Tab (placeholder) -->
+        <div class="dashboard-panel" id="tab-tracker">
+          <h3>Tracker (coming soon)</h3>
+          <p class="text-muted">
+            Contracts you move from Discovery using the <strong>+</strong> button will be
+            marked for tracking. This view will later be expanded into a dedicated tracker
+            with stages, notes, and status updates.
+          </p>
+          <p class="text-muted">
+            For now, the <strong>+</strong> button simply removes contracts from Discovery
+            and Potential Contracts and flags them internally as “tracker” items.
+          </p>
+        </div>
+
+        <!-- Past Potentials Tab -->
+        <div class="dashboard-panel" id="tab-past">
+          <h3>Past Potentials</h3>
+          <p class="text-muted">
+            Contracts whose bid due date has passed before being moved into the tracker.
+            These are kept here for reference and future market research.
+          </p>
+          <div id="past-list" class="contract-grid"></div>
         </div>
       </div>
     </section>
@@ -84,8 +123,10 @@
     </div>
   </footer>
 
+  <!-- Supabase + Dashboard Logic -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // Supabase config (same as login page)
     const SUPABASE_URL = "https://utpjnmvywcuhhhkhgcqo.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0cGpubXZ5d2N1aGhoa2hnY3FvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzAyMTcsImV4cCI6MjA4MDA0NjIxN30.8lWGmZ2Z5InfcI0qlGlMyMFsAsPdCyOA8ePc-ecPWnE";
 
@@ -98,53 +139,7 @@
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
 
-    async function checkSession() {
-      const userInfoEl = document.getElementById("user-info");
-      const { data, error } = await supabaseClient.auth.getSession();
-
-      if (error) {
-        console.error(error);
-        userInfoEl.textContent = "Error checking session. Redirecting to login...";
-        setTimeout(() => {
-          window.location.href = "login.html";
-        }, 1500);
-        return;
-      }
-
-      const session = data.session;
-
-      if (!session || !session.user) {
-        userInfoEl.textContent = "No active session. Redirecting to login...";
-        setTimeout(() => {
-          window.location.href = "login.html";
-        }, 1500);
-        return;
-      }
-
-      userInfoEl.textContent = "Signed in as: " + session.user.email;
-    }
-
-    async function handleLogout() {
-      const { error } = await supabaseClient.auth.signOut();
-      if (error) {
-        console.error(error);
-        alert("Error logging out: " + error.message);
-        return;
-      }
-      window.location.href = "login.html";
-    }
-
-    document.getElementById("logout-btn").addEventListener("click", handleLogout);
-
-    // Run on page load
-    checkSession();
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://utpjnmvywcuhhhkhgcqo.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0cGpubXZ5d2N1aGhoa2hnY3FvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzAyMTcsImV4cCI6MjA4MDA0NjIxN30.8lWGmZ2Z5InfcI0qlGlMyMFsAsPdCyOA8ePc-ecPWnE";
-  
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // ---------- NAV LOGIN/LOGOUT TOGGLING ----------
 
     async function updateNavForAuth() {
       const { data } = await supabaseClient.auth.getSession();
@@ -159,7 +154,6 @@
       const mLogout = document.getElementById("mobile-logout");
 
       if (session && session.user) {
-        // User is logged in
         if (dashboard) dashboard.style.display = "inline-flex";
         if (login) login.style.display = "none";
         if (logout) logout.style.display = "inline-flex";
@@ -168,12 +162,9 @@
         if (mLogin) mLogin.style.display = "none";
         if (mLogout) mLogout.style.display = "block";
 
-        // Attach logout action
         if (logout) logout.onclick = handleLogout;
         if (mLogout) mLogout.onclick = handleLogout;
-      } 
-      else {
-        // User is logged out
+      } else {
         if (dashboard) dashboard.style.display = "none";
         if (login) login.style.display = "inline-flex";
         if (logout) logout.style.display = "none";
@@ -190,7 +181,233 @@
       window.location.href = "login.html";
     }
 
-    updateNavForAuth();
+    // ---------- AUTH GUARD FOR DASHBOARD ----------
+
+    async function ensureSession() {
+      const { data, error } = await supabaseClient.auth.getSession();
+
+      if (error) {
+        console.error(error);
+        alert("Error checking session. Redirecting to login.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      const session = data.session;
+      if (!session || !session.user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      // User is logged in – render dashboard content
+      renderDashboard();
+    }
+
+    // ---------- DASHBOARD TAB SWITCHING ----------
+
+    function setupDashboardTabs() {
+      const tabs = document.querySelectorAll(".dashboard-tab");
+      const panels = {
+        discovery: document.getElementById("tab-discovery"),
+        tracker: document.getElementById("tab-tracker"),
+        past: document.getElementById("tab-past"),
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const target = tab.getAttribute("data-tab");
+
+          tabs.forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+
+          Object.keys(panels).forEach((key) => {
+            panels[key].classList.remove("active");
+          });
+          panels[target].classList.add("active");
+        });
+      });
+    }
+
+    // ---------- CONTRACT DATA & RENDERING ----------
+
+    // Placeholder sample data – replace this with real results later
+    const contracts = [
+      {
+        id: "1",
+        title: "Grounds Maintenance – Campus A",
+        agency: "Sample Federal Agency",
+        location: "Tacoma, WA",
+        dueDate: "2025-12-15",
+        estValue: "$100k – $250k",
+        status: "discovery",
+        sourceUrl: "#"
+      },
+      {
+        id: "2",
+        title: "Janitorial Services – Regional Office",
+        agency: "Sample City Government",
+        location: "Seattle, WA",
+        dueDate: "2025-12-05",
+        estValue: "$50k – $100k",
+        status: "discovery",
+        sourceUrl: "#"
+      },
+      {
+        id: "3",
+        title: "Snow Removal – Multiple Sites",
+        agency: "Sample County Facilities",
+        location: "Pierce County, WA",
+        dueDate: "2025-11-20",
+        estValue: "$75k – $150k",
+        status: "queued",
+        sourceUrl: "#"
+      },
+      {
+        id: "4",
+        title: "Landscape Improvements – Parks",
+        agency: "Sample Parks Department",
+        location: "Tacoma, WA",
+        dueDate: "2025-10-01",
+        estValue: "$200k – $400k",
+        status: "discovery",
+        sourceUrl: "#"
+      }
+    ];
+
+    function isExpired(dueDateStr) {
+      const now = new Date();
+      const due = new Date(dueDateStr + "T23:59:59");
+      return due < now;
+    }
+
+    function formatDate(dueDateStr) {
+      const d = new Date(dueDateStr);
+      return d.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function splitContracts() {
+      const active = [];
+      const past = [];
+
+      contracts.forEach((c) => {
+        if (c.status === "tracker") {
+          return; // We'll show these later in a dedicated tracker
+        }
+
+        if (isExpired(c.dueDate)) {
+          past.push(c);
+        } else {
+          active.push(c);
+        }
+      });
+
+      // Sort by due date soonest first
+      active.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+      past.sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate)); // newest expired first
+
+      const discovery = active.slice(0, 10);
+      const potential = active.slice(10);
+
+      return { discovery, potential, past };
+    }
+
+    function renderList(list, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+
+      if (!list.length) {
+        const empty = document.createElement("p");
+        empty.className = "text-muted";
+        empty.style.fontSize = "0.85rem";
+        empty.textContent = "No contracts to display.";
+        container.appendChild(empty);
+        return;
+      }
+
+      list.forEach((c) => {
+        const card = document.createElement("div");
+        card.className = "contract-card";
+
+        const title = document.createElement("h4");
+        title.textContent = c.title;
+        card.appendChild(title);
+
+        const meta = document.createElement("div");
+        meta.className = "contract-meta";
+        meta.innerHTML = `
+          <span>${c.agency}</span>
+          <span>${c.location}</span>
+        `;
+        card.appendChild(meta);
+
+        const due = document.createElement("p");
+        due.className = "text-muted";
+        due.style.fontSize = "0.85rem";
+        due.textContent = "Bid due: " + formatDate(c.dueDate);
+        card.appendChild(due);
+
+        if (c.estValue) {
+          const val = document.createElement("p");
+          val.className = "text-muted";
+          val.style.fontSize = "0.85rem";
+          val.textContent = "Est. value: " + c.estValue;
+          card.appendChild(val);
+        }
+
+        const actions = document.createElement("div");
+        actions.className = "contract-actions";
+
+        if (c.sourceUrl && c.sourceUrl !== "#") {
+          const link = document.createElement("a");
+          link.href = c.sourceUrl;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "View posting";
+          link.className = "btn-outline";
+          actions.appendChild(link);
+        }
+
+        // "+" button to move into tracker (if not expired)
+        if (!isExpired(c.dueDate)) {
+          const addBtn = document.createElement("button");
+          addBtn.type = "button";
+          addBtn.className = "btn";
+          addBtn.textContent = "+ Add to tracker";
+          addBtn.onclick = () => moveToTracker(c.id);
+          actions.appendChild(addBtn);
+        }
+
+        card.appendChild(actions);
+        container.appendChild(card);
+      });
+    }
+
+    function moveToTracker(id) {
+      const idx = contracts.findIndex((c) => c.id === id);
+      if (idx !== -1) {
+        contracts[idx].status = "tracker";
+      }
+      renderDashboard();
+    }
+
+    function renderDashboard() {
+      const { discovery, potential, past } = splitContracts();
+      renderList(discovery, "discovery-list");
+      renderList(potential, "potential-list");
+      renderList(past, "past-list");
+    }
+
+    // ---------- INIT ----------
+
+    (async function init() {
+      await updateNavForAuth();
+      setupDashboardTabs();
+      await ensureSession(); // will call renderDashboard() after auth
+    })();
   </script>
 </body>
 </html>
