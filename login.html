@@ -108,14 +108,12 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    // 1) Replace these two values with your real Supabase project details
+    // Supabase project config (safe to be public on frontend)
     const SUPABASE_URL = "https://utpjnmvywcuhhhkhgcqo.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0cGpubXZ5d2N1aGhoa2hnY3FvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzAyMTcsImV4cCI6MjA4MDA0NjIxN30.8lWGmZ2Z5InfcI0qlGlMyMFsAsPdCyOA8ePc-ecPWnE";
 
-    // 2) Create the Supabase client
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // 3) Existing utilities
     document.getElementById("year").textContent = new Date().getFullYear();
 
     function toggleMobileMenu() {
@@ -123,7 +121,6 @@
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
 
-    // 4) Handle login with Supabase
     async function handleLogin(event) {
       event.preventDefault();
 
@@ -152,7 +149,6 @@
         return;
       }
 
-      // Login success – redirect to dashboard
       messageEl.textContent = "Login successful. Redirecting...";
       window.location.href = "dashboard.html";
     }
