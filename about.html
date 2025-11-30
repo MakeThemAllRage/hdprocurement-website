@@ -6,6 +6,16 @@
   <title>About | HD Procurement LLC</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+<script>
+  const links = document.querySelectorAll('.nav-links a');
+  const current = window.location.pathname.split('/').pop();
+
+  links.forEach(link => {
+    if (link.getAttribute('href') === current) {
+      link.classList.add('active');
+    }
+  });
+</script>
 <body>
   <header>
     <div class="container navbar">
