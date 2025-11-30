@@ -47,6 +47,8 @@ header {
   padding: 1rem 0;
 }
 
+/* Logo + Text */
+
 .logo {
   display: flex;
   align-items: center;
@@ -56,17 +58,11 @@ header {
   color: var(--primary);
 }
 
-.logo-mark {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--white);
-  font-weight: 800;
-  font-size: 0.9rem;
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
 }
 
 .nav-links {
@@ -175,7 +171,7 @@ header {
   font-size: 0.95rem;
 }
 
-/* Hero “card” */
+/* Hero card */
 
 .hero-card {
   background: var(--white);
@@ -439,6 +435,10 @@ footer {
 
   .mobile-menu-btn {
     display: block;
+  }
+
+  .logo-text {
+    font-size: 1.1rem;
   }
 
   .hero h1 {
