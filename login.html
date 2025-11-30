@@ -13,7 +13,7 @@
         <img 
           src="logo-hd-procurement.png" 
           alt="HD Procurement LLC" 
-          style="height:60px" 
+          style="height:60px;" 
         />
         <span class="logo-text">HD Procurement LLC</span>
       </div>
@@ -45,34 +45,48 @@
       <div class="container two-col">
         <div>
           <div class="section-kicker">Internal portal</div>
-          <h2>HD Procurement dashboard (coming soon).</h2>
+          <h2>HD Procurement dashboard (internal use only).</h2>
           <p>
             This area is reserved for HD Procurement LLC’s internal tools and dashboards.
-            As our operations grow, this page will be replaced with a secure sign-in
-            experience for managing opportunities, projects, and coordination tasks.
+            Over time, this portal will be used to manage opportunities, bids, subcontractors,
+            and active projects.
           </p>
           <p class="text-muted" style="margin-top:0.75rem;">
-            For now, there is no public login. Team members will receive access details
-            once the portal is live.
+            Access is limited to authorized team members. If you are trying to get in touch
+            about work, opportunities, or teaming, please use the
+            <a href="contact.html">contact page</a> instead.
           </p>
         </div>
 
         <div class="contact-card">
-          <h3>Sign in</h3>
+          <h3>Team login</h3>
           <p class="text-muted" style="margin-bottom:0.75rem;">
-            Authentication and user accounts will be integrated here in a later phase of
-            development.
+            Use your assigned HD Procurement login credentials. If you have trouble accessing
+            the portal, contact an administrator.
           </p>
-          <form>
+          <form id="login-form" onsubmit="handleLogin(event)">
             <div>
               <label for="email">Email</label>
-              <input id="email" type="email" placeholder="you@company.com" disabled />
+              <input 
+                id="email" 
+                name="email" 
+                type="email" 
+                placeholder="you@hdprocurement.com" 
+                required
+              />
             </div>
             <div>
               <label for="password">Password</label>
-              <input id="password" type="password" placeholder="••••••••" disabled />
+              <input 
+                id="password" 
+                name="password" 
+                type="password" 
+                placeholder="••••••••" 
+                required
+              />
             </div>
-            <button type="button" class="btn" disabled>Coming soon</button>
+            <button type="submit" class="btn">Sign in</button>
+            <p id="login-message" class="text-muted" style="margin-top:0.5rem; font-size:0.85rem;"></p>
           </form>
         </div>
       </div>
@@ -90,12 +104,57 @@
     </div>
   </footer>
 
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
+    // 1) Replace these two values with your real Supabase project details
+    const SUPABASE_URL = "YOUR_SUPABASE_URL_HERE";
+    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY_HERE";
+
+    // 2) Create the Supabase client
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // 3) Existing utilities
     document.getElementById("year").textContent = new Date().getFullYear();
 
     function toggleMobileMenu() {
       const menu = document.getElementById("mobile-menu");
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+    }
+
+    // 4) Handle login with Supabase
+    async function handleLogin(event) {
+      event.preventDefault();
+
+      const emailEl = document.getElementById("email");
+      const passwordEl = document.getElementById("password");
+      const messageEl = document.getElementById("login-message");
+
+      const email = emailEl.value.trim();
+      const password = passwordEl.value;
+
+      if (!email || !password) {
+        messageEl.textContent = "Please enter your email and password.";
+        return;
+      }
+
+      messageEl.textContent = "Signing in...";
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error(error);
+        messageEl.textContent = "Login failed: " + error.message;
+        return;
+      }
+
+      // Login success – redirect to dashboard
+      messageEl.textContent = "Login successful. Redirecting...";
+      window.location.href = "dashboard.html";
     }
   </script>
 </body>
